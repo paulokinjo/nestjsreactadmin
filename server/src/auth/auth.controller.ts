@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth.guard';
 import { UserService } from './../user/user.service';
 import {
   BadRequestException,
@@ -10,6 +11,7 @@ import {
   Res,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { User } from 'src/user/models/user.entity';
 import * as bcrypt from 'bcryptjs';
@@ -27,6 +29,7 @@ export class AuthController {
     private readonly jwtService: JwtService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Get('user')
   async user(@Req() request: Request) {
     const cookie = request.cookies['jwt'];
@@ -67,6 +70,7 @@ export class AuthController {
     return user;
   }
 
+  @UseGuards(AuthGuard)
   @Post('logout')
   async logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('jwt');
@@ -89,8 +93,15 @@ export class AuthController {
       this.configService.get<number>('database.password.saltOrRounds'),
     );
 
+    const { firstName, lastName, email } = body;
+
     try {
-      return await this.userService.save({ ...body, password: hashed });
+      return await this.userService.save({
+        firstName,
+        lastName,
+        email,
+        password: hashed,
+      });
     } catch (error) {
       if (error.message.includes(body.email)) {
         throw new BadRequestException(

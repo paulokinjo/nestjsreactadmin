@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import TypeOrmMysqlDBConfig from './database/config';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -17,6 +18,7 @@ import configuration from './config/configuration';
       load: [configuration],
       isGlobal: true,
     }),
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

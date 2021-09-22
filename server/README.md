@@ -32,6 +32,31 @@
 $ npm install
 ```
 
+## Before
+Running the Database
+```shell
+$ docker-compose up db
+```
+
+### Running the app through docker
+```shell
+$ docker-compose up --build
+```
+
+### Environment
+create a .env file in the root of the application:
+> DATABASE_TYPE=mysql
+
+> DATABASE_HOST=db
+
+> DATABASE_PORT=3306
+
+> DATABASE_USERNAME=root
+
+> DATABASE_PASSWORD=root
+
+> DATABASE_NAME=admin
+
 ## Running the app
 
 ```bash

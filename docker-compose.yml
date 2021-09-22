@@ -1,11 +1,11 @@
 version: '3.9'
 services:
   backend:
-    build: .
+    build: server/
     ports:
       - 8000:3000
     volumes:
-      - .:/app
+      - ./server/:/app
     depends_on:
       - db
     environment:
@@ -15,6 +15,16 @@ services:
       DATABASE_USERNAME: root
       DATABASE_PASSWORD: root
       DATABASE_NAME: admin
+
+  frontend:
+    build: client/
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client/:/app
+    depends_on:
+      - db
+      - backend
 
   db:
     image: mysql:5.7.22
